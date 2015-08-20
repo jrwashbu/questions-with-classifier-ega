@@ -119,7 +119,7 @@ function ConversationStore() {
 	/**
 	 * None of the above was clicked, so let's log that feedback
 	 */
-    self.on(action.NONE_OF_THE_ABOVE_CLICKED, function(messageData){
+    self.on(action.NONE_OF_THE_ABOVE_CLICKED, function(){
         // Don't wait for feedback API calls to return
         self.trigger(action.NONE_OF_THE_ABOVE_CLICKED_BROADCAST);
         

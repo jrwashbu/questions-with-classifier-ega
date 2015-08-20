@@ -16,8 +16,11 @@
 package com.ibm.watson.app.qaclassifier.selenium;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +74,16 @@ public class HighLowConfidenceAnswersIT {
 
         assertTrue("After asking question via text input, find the forum button in Still Need Help section",
                 visitForumButtonFound());
+        
+        CommonFunctions.findVisitTheForumButton(driver).click();
+        
+        ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1));
+        assertThat("After clicking on the forum button, page is redirected",
+        		driver.getTitle(), is("natural-language-classifier - dWAnswers"));
+        
+        driver.close();
+        driver.switchTo().window(tabs.get(0));
     }
 
     private String getDisplayedQuestionText() {
@@ -82,10 +95,10 @@ public class HighLowConfidenceAnswersIT {
     }
     
     private Boolean findNoneOfTheAboveButton() {
-    	return driver.findElement(By.className("none")).isDisplayed();
+    	return CommonFunctions.findNoneOfTheAboveButton(driver).isDisplayed();
     }
     
     private Boolean visitForumButtonFound() {
-    	return driver.findElement(By.className("visitForum")).isDisplayed();
+    	return CommonFunctions.findVisitTheForumButton(driver).isDisplayed();
     }
 }

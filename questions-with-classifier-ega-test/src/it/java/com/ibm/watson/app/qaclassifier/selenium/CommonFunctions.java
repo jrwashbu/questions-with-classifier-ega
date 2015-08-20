@@ -104,6 +104,14 @@ public class CommonFunctions {
         }
         return ((HasCapabilities) driver).getCapabilities().getBrowserName();
     }
+    
+    public static WebElement findNoneOfTheAboveButton(WebDriver driver) {
+    	return driver.findElement(By.className("none"));
+    }
+    
+    public static WebElement findVisitTheForumButton(WebDriver driver) {
+    	return driver.findElement(By.className("visitForum"));
+    }
 
     private static void waitForAnswer(WebDriver driver) {
         // We know that an answer has been returned when the answer tag has a child element.

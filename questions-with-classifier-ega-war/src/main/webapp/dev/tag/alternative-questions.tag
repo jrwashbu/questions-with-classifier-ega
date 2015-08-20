@@ -47,6 +47,8 @@
     }
     
     noneOfTheAbove(e) {
+    	Dispatcher.trigger(action.NONE_OF_THE_ABOVE_CLICKED);
+    	
     	self.showStillNeedHelp = true;
         self.noneOfAboveLabel.innerHTML = "<img src=\"images/Badge_88.svg\" class=\"yayIcon\" />" + polyglot.t("thanksForFeedbackMessage");
         self.noneOfAboveLabel.classList.add("selected");

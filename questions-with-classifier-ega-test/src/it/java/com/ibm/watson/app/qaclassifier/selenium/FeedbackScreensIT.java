@@ -17,8 +17,11 @@ package com.ibm.watson.app.qaclassifier.selenium;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,6 +95,31 @@ public class FeedbackScreensIT {
             assertThat("After 'I still need help' button was pressed, text input could not be made for another question",
             		driver.findElements(By.id("askButton")), hasSize(1));
         }
+    }
+    
+    @Test
+    public void userCanVisitForum() {
+    	CommonFunctions.askQuestionViaTextInput(driver, SampleQuestions.LOW_CONFIDENCE);
+    	
+    	WebElement noneOfTheAboveButton = CommonFunctions.findNoneOfTheAboveButton(driver);
+    	assertTrue("After asking low-confidence question, expect to find none of the above button",
+    			noneOfTheAboveButton.isDisplayed());
+    	noneOfTheAboveButton.click();
+    	
+    	WebElement forumButton = CommonFunctions.findVisitTheForumButton(driver);
+    	assertTrue("After clicking none of the above button, expect to find visit the forum button",
+    			forumButton.isDisplayed());
+    	forumButton.click();
+    	
+        ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1)); //Access new tab
+        assertThat("After clicking on the forum button, page is redirected",
+        		driver.getTitle(), is("natural-language-classifier - dWAnswers"));
+        
+        driver.close();
+        driver.switchTo().window(tabs.get(0));
+        
+        // Can't verify that the feedback was logged, but the log scans will catch any errors.
     }
 
 

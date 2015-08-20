@@ -19,6 +19,11 @@ function ConversationStore() {
         responses      : [],
         topQuestions   : []
     };
+    
+    // Question history is kept in chronological order, oldest at index 0.
+    // Question cache format: messageId : {message: "", responses: []}
+    self.questionHistory = [];
+    self.questionCache   = {};
 
     /**
      * Takes a response and processes its body for a JSON response
@@ -104,6 +109,29 @@ function ConversationStore() {
         .then(_parseJson)
         .then(function(data) {
             
+            // Update the cache
+            var oldMessageId;
+            
+            if (questionHistory.length) {
+                oldMessageId = self.conversation.messageId;
+                
+                self.questionHistory.push(oldMessageId);
+                self.questionCache[oldMessageId] = { 
+                    "message" : self.conversation.message, 
+                    "responses" : self.conversation.responses
+                };
+            }
+            else {
+            // This must be the first question that was asked
+                oldMessageId = data.messageId;
+                
+                self.questionHistory.push(oldMessageId);
+                self.questionCache[oldMessageId] = { 
+                    "message" : data.message, 
+                    "responses" : data.responses
+                };
+            }
+
             self.conversation.responses = data.responses;
             self.conversation.messageId = data.messageId;
             self.conversation.message   = data.message;

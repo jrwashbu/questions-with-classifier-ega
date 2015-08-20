@@ -112,7 +112,7 @@ function ConversationStore() {
             // Update the cache
             var oldMessageId;
             
-            if (questionHistory.length) {
+            if (self.questionHistory.length) {
                 oldMessageId = self.conversation.messageId;
                 
                 self.questionHistory.push(oldMessageId);

@@ -13,11 +13,12 @@ function ConversationStore() {
     var self = this;
 
     self.conversation = {
-        conversationId : "",
-        message        : "",
-        messageId      : "",
-        responses      : [],
-        topQuestions   : []
+        conversationId  : "",
+        message         : "",
+        messageId       : "",
+        isFirstQuestion : true,
+        responses       : [],
+        topQuestions    : []
     };
     
     // Question history is kept in chronological order, oldest at index 0.
@@ -86,6 +87,7 @@ function ConversationStore() {
         
         self.trigger(action.ASKING_QUESTION_BROADCAST);
         
+        // Get the postBody looking proper
         var requestBody = {};
         
         if (question.message) {
@@ -110,9 +112,10 @@ function ConversationStore() {
         .then(function(data) {
             
             // Update the cache
-            var oldMessageId;
+            var oldMessageId,
+                isFirstQuestion = !self.questionHistory.length;
             
-            if (self.questionHistory.length) {
+            if (isFirstQuestion) {
                 oldMessageId = self.conversation.messageId;
                 
                 self.questionHistory.push(oldMessageId);
@@ -132,9 +135,10 @@ function ConversationStore() {
                 };
             }
 
-            self.conversation.responses = data.responses;
-            self.conversation.messageId = data.messageId;
-            self.conversation.message   = data.message;
+            self.conversation.responses       = data.responses;
+            self.conversation.messageId       = data.messageId;
+            self.conversation.message         = data.message;
+            self.conversation.isFirstQuestion = isFirstQuestion;
 
             self.trigger(action.ANSWER_RECEIVED_BROADCAST, self.conversation);
             self.trigger(action.ALTERNATIVE_QUESTION_BROADCAST, self.conversation);

@@ -99,6 +99,7 @@ public class MenuMobileIT {
         documentationOption.click();
         
         //New tab with documentation is opened
+        CommonFunctions.waitForTabToOpen(driver);
         ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles()); //Get all existing tabs
         driver.switchTo().window(tabs.get(1)); //Access new tab
         

@@ -110,7 +110,9 @@ public class FeedbackScreensIT {
     	assertTrue("After clicking none of the above button, expect to find visit the forum button",
     			forumButton.isDisplayed());
     	forumButton.click();
-    	
+
+    	CommonFunctions.waitForTabToOpen(driver);
+
         ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
         driver.switchTo().window(tabs.get(1)); //Access new tab
         assertThat("After clicking on the forum button, page is redirected",

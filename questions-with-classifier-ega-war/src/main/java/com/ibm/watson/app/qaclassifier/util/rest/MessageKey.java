@@ -73,6 +73,7 @@ public enum MessageKey {
     AQWQAC14002E_no_classifier_instances(0),
     AQWQAC14003E_no_available_classifiers(0),
     AQWQAC24012E_conf_service_null(0),
+    AQWQAC14004E_question_too_long_1(1),
     
     ;
 

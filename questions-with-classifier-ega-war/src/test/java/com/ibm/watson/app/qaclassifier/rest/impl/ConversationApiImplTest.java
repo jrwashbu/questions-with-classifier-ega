@@ -123,7 +123,7 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.the_conversation_api_is_created();
         WHEN.ask_question_is_invoked_with_question("What is the NL Classifier?");
         THEN.a_server_error_is_returned();
-            AND.the_response_entity_is_an_error_respone();
+            AND.the_response_entity_is_an_error_response();
             AND.the_error_message_is(MessageKey.AQWQAC14001E_error_selection_correct_classifier.getMessage().getFormattedMessage());
     }
     
@@ -133,7 +133,7 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.the_conversation_api_is_created();
         WHEN.ask_question_is_invoked_with_question("What is the NL Classifier?");
         THEN.a_server_error_is_returned();
-            AND.the_response_entity_is_an_error_respone();
+            AND.the_response_entity_is_an_error_response();
             AND.the_error_message_is(MessageKey.AQWQAC14002E_no_classifier_instances.getMessage().getFormattedMessage());
     }
     
@@ -144,7 +144,7 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.the_conversation_api_is_created();
         WHEN.ask_question_is_invoked_with_question("What is the NL Classifier?");
         THEN.a_server_error_is_returned();
-            AND.the_response_entity_is_an_error_respone();
+            AND.the_response_entity_is_an_error_response();
             AND.the_error_message_is(MessageKey.AQWQAC14003E_no_available_classifiers.getMessage().getFormattedMessage());
     }
     
@@ -224,7 +224,7 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.the_conversation_api_is_created();
         WHEN.ask_question_is_invoked_with_question("What is the NL Classifier?");
         THEN.a_server_error_is_returned();
-            AND.the_response_entity_is_an_error_respone();
+            AND.the_response_entity_is_an_error_response();
             AND.the_error_message_is(MessageKey.AQWQAC14001E_error_selection_correct_classifier.getMessage().getFormattedMessage());
     }
     
@@ -236,7 +236,7 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.the_conversation_api_is_created();
         WHEN.ask_question_is_invoked_with_question("What is the NL Classifier?");
         THEN.a_server_error_is_returned();
-            AND.the_response_entity_is_an_error_respone();
+            AND.the_response_entity_is_an_error_response();
             AND.the_error_message_is(MessageKey.AQWQAC14001E_error_selection_correct_classifier.getMessage().getFormattedMessage());
     }
     
@@ -404,6 +404,21 @@ public class ConversationApiImplTest extends BaseRestApiTest {
             AND.verify_put_was_invoked_on_response_cache(CONVERSATION_ID);
     }
     
+    @Test
+    public void test_ask_question_too_long() throws Exception {
+    	StringBuilder longQuestion = new StringBuilder();
+    	for (int i=0; i <= ConversationApiImpl.MAX_QUESTION_LENGTH / "hello ".length(); i++) {
+    		longQuestion.append("hello ");
+    	}
+    	GIVEN.the_classifier_service_is_mocked();
+        	WITH.an_available_classifier_instance();
+        	AND.the_conversation_api_is_created();
+        WHEN.ask_question_is_invoked_with_question(longQuestion.toString());
+        THEN.a_bad_request_error_is_returned();
+	        AND.the_response_entity_is_an_error_response();
+	        AND.the_error_message_is(MessageKey.AQWQAC14004E_question_too_long_1.getMessage(longQuestion.toString()).getFormattedMessage());
+    }
+    
     private void verify_put_was_invoked_on_response_cache(String conversationId) {
         verify(responseCache, times(1)).put(eq(CONVERSATION_ID), Matchers.anyListOf(Answer.class));
     }
@@ -464,12 +479,16 @@ public class ConversationApiImplTest extends BaseRestApiTest {
         assertEquals(errorMsg, ((ErrorResponse)response.getEntity()).getMessage());
     }
     
-    private void the_response_entity_is_an_error_respone() {
+    private void the_response_entity_is_an_error_response() {
         assertTrue(response.getEntity() instanceof ErrorResponse);
     }
 
     private void a_server_error_is_returned() {
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+    }
+    
+    private void a_bad_request_error_is_returned() {
+    	assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
     
     private void ask_question_is_invoked_with_question_and_referrer(String question, MessageRequestReferrer referrer) throws NotFoundException {

@@ -56,6 +56,8 @@ import com.ibm.watson.app.qaclassifier.services.rest.UserTracking.InputMode;
 import com.ibm.watson.app.qaclassifier.util.rest.MessageKey;
 
 public class ConversationApiImpl extends AbstractRestApiImpl implements ConversationApiInterface, ConfigurationConstants {
+    public static final int MAX_QUESTION_LENGTH = 1024;
+
     private static final Logger logger = LogManager.getLogger();
 
     private final NLClassifierService service;
@@ -121,6 +123,10 @@ public class ConversationApiImpl extends AbstractRestApiImpl implements Conversa
             if (message.getReferrer().getSource() == null) {
                 return getBadRequestResponse("referrer source required when referrer is set");
             }
+        }
+        
+        if (message.getMessage().length() > MAX_QUESTION_LENGTH) {
+        	return getBadRequestResponse(MessageKey.AQWQAC14004E_question_too_long_1.getMessage(message.getMessage()).getFormattedMessage());
         }
         
         if (service == null) {

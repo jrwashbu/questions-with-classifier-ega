@@ -113,6 +113,15 @@ public class CommonFunctions {
     	return driver.findElement(By.className("visitForum"));
     }
 
+	public static void waitForTabToOpen(WebDriver driver) {
+		new WebDriverWait(driver, 2).until(new Predicate<WebDriver>() {
+			@Override
+			public boolean apply(WebDriver input) {
+				return input.getWindowHandles().size() == 2;
+			}
+		});
+	}
+
     private static void waitForAnswer(WebDriver driver) {
         // We know that an answer has been returned when the answer tag has a child element.
         new WebDriverWait(driver, 10).until(new Predicate<WebDriver>() {

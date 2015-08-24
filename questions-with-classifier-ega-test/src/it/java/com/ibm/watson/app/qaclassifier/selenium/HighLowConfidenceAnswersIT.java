@@ -76,7 +76,8 @@ public class HighLowConfidenceAnswersIT {
                 visitForumButtonFound());
         
         CommonFunctions.findVisitTheForumButton(driver).click();
-        
+
+        CommonFunctions.waitForTabToOpen(driver);
         ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
         driver.switchTo().window(tabs.get(1));
         assertThat("After clicking on the forum button, page is redirected",

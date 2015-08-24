@@ -206,7 +206,7 @@
               <!-- Database: 1) Copy derby JARs to target dir, these are referenced as a JDBC driver in the Liberty server.xml -->
               <execution>
                 <id>copy-derby-jars</id>
-                <phase>package</phase>
+                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>copy</goal>
                 </goals>
@@ -235,7 +235,7 @@
               <!-- Database: 2) Unpack entities so they can be enhanced -->
               <execution>
                 <id>unpack.entities</id>
-                <phase>process-sources</phase>
+                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>unpack</goal>
                 </goals>
@@ -256,7 +256,7 @@
               </execution>
               <execution>
                 <id>copy-war-to-deploy-to-liberty</id>
-                <phase>package</phase>
+                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>copy</goal>
                 </goals>
@@ -288,7 +288,7 @@
             <executions>
               <execution>
                 <id>enhancer</id>
-                <phase>process-classes</phase>
+                <phase>pre-integration-test</phase>
                   <goals>
                   <goal>enhance</goal>
                 </goals>

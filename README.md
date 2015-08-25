@@ -1,4 +1,4 @@
-# Questions on the Natural Language Classifier Application Overview - jrw
+# Questions on the Natural Language Classifier Application Overview - jrw2 
 The Questions on the Natural Language Classifier Application uses the Watson Natural Language Classifier Service to show how to build a question-and-answer application that uses a small amount of training data and to demonstrate some best practices for using the service.
 
 To function correctly this application requires the following items:

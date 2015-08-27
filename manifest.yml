@@ -11,10 +11,10 @@ declared-services:
     plan: sqldb_free
 
 applications:
-- name: questions-with-classifier
+- name: bmx-jrw-questions-with-classifier
   memory: 512M
   path: questions-with-classifier-ega-war/target/questions-with-classifier-ega-war.zip
-  host: questions-with-classifier
+  host: bmx-jrw-questions-with-classifier
   services:
   - questions-classifier
   - questions-db
